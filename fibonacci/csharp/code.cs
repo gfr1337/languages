@@ -1,10 +1,5 @@
-﻿static int Fibonacci(int n) =>
-    n <= 1 ? n : Fibonacci(n - 1) + Fibonacci(n - 2);
-
-var u = int.Parse(args[0]);
-var r = 0;
-for (var i = 1; i < u; i++)
+﻿public static class Code
 {
-    r += Fibonacci(i);
+    public static int Fibonacci(int n) =>
+        n < 2 ? n : Fibonacci(n - 1) + Fibonacci(n - 2);
 }
-Console.WriteLine(r);
