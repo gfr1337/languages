@@ -12,7 +12,7 @@ public static class Code
         //using a.Length instead of 10_000 constant should give the compiler better optimization hints
         for (var i = 0; i < a.Length; i++)
         {
-            for (var j = 0; j < 100_000; j++)
+            for (var j = 0; j < 10_000; j++)
             {
                 a[i] += j % u;
             }
