@@ -4,33 +4,38 @@ public static class Benchmark<T>
 {
     public static BenchmarkResult<T>? Run(Func<T> func, int runMs)
     {
-        if (runMs == 0)
+        if (runMs <= 0)
         {
             return null;
         }
 
-        if (runMs > 1)
-        {
-            Console.Error.Write('.');
-        }
-
         var runNs = runMs * 1_000_000L;
-        var totalElapsed = 0L;
 
-        var elapsedTime = new List<long>();
+        var runs = 0;
+        var sum = 0L;
+        var min = long.MaxValue;
+        var max = 0L;
+        var sumSq = 0L;
+
         T lastResult = default!;
 
         var lastTime = Stopwatch.GetTimestamp();
 
-        while (totalElapsed < runNs)
+        while (sum < runNs)
         {
             var startTime = Stopwatch.GetTimestamp();
             lastResult = func();
             var endTime = Stopwatch.GetTimestamp();
 
             var elapsed = endTime - startTime;
-            totalElapsed += elapsed;
-            elapsedTime.Add(elapsed);
+
+            runs++;
+
+            sum += elapsed;
+            sumSq += elapsed * elapsed;
+
+            min = Math.Min(min, elapsed);
+            max = Math.Max(max, elapsed);
 
             if (runMs > 1 && (startTime - lastTime) > Stopwatch.Frequency)
             {
@@ -44,20 +49,18 @@ public static class Benchmark<T>
             Console.Error.WriteLine();
         }
 
-        var meanTicks = elapsedTime.Average();
-        var variance = elapsedTime.Select(x => Math.Pow(x - meanTicks, 2)).Average();
-        var stdDevTicks = Math.Sqrt(variance);
-        double minTicks = elapsedTime.Min();
-        double maxTicks = elapsedTime.Max();
+        var mean = (double)sum / runs;
+        var variance = (double)sumSq / runs - Math.Pow(mean, 2);
+        var stdDev = Math.Sqrt(variance);
 
         var ticksToMs = 1000D / Stopwatch.Frequency;
 
         return new BenchmarkResult<T>(
-            meanTicks * ticksToMs,
-            stdDevTicks * ticksToMs,
-            minTicks * ticksToMs,
-            maxTicks * ticksToMs,
-            elapsedTime.Count,
+            mean * ticksToMs,
+            stdDev * ticksToMs,
+            min * ticksToMs,
+            max * ticksToMs,
+            runs,
             lastResult);
     }
 }
