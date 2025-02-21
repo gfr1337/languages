@@ -10,8 +10,8 @@ function compile_languages {
   compile 'Clojure Native' 'clojure-native-image' '(cd clojure-native-image ; clojure -M:native-image-run --pgo-instrument -march=native) ; ./clojure-native-image/run -XX:ProfilesDumpFile=clojure-native-image/run.iprof 10000 2000 $(./check-output.sh -i) && (cd clojure-native-image ; clojure -M:native-image-run --pgo=run.iprof -march=native)'
   compile 'Crystal' 'crystal' 'crystal build --release --mcpu native crystal/run.cr -o crystal/run'
   compile 'C++' 'cpp' 'g++ -march=native -std=c++23 -O3 -Ofast -I../lib/cpp cpp/run.cpp -o cpp/run'
-  compile 'C#' 'csharp' 'dotnet publish csharp -o csharp/code'
-  compile 'C# AOT' 'csharp' 'dotnet publish csharp -o csharp/code-aot /p:PublishAot=true /p:OptimizationPreference=Speed /p:IlcInstructionSet=native'
+  compile 'C#' 'csharp' 'dotnet publish csharp/in-process -o csharp/in-process/code'
+  compile 'C# AOT' 'csharp' 'dotnet publish csharp/in-process -o csharp/in-process/code-aot /p:PublishAot=true /p:OptimizationPreference=Speed /p:IlcInstructionSet=native'
   compile 'Fortran' 'fortran' 'gfortran -O3 -J../lib/fortran ../lib/fortran/benchmark.f90 fortran/*.f90 -o fortran/run'
   compile 'Gleam' 'maelg' '(cd maelg && gleam build --target erlang)'
   compile 'Java' 'jvm' 'javac -cp ../lib/java jvm/*.java'
@@ -31,8 +31,8 @@ function run_languages {
   run 'Clojure Native' './clojure-native-image/run' './clojure-native-image/run'
   run "Crystal" "./crystal/run" "./crystal/run"
   run 'C++' './cpp/run' './cpp/run'
-  run 'C#' './csharp/code/code' './csharp/code/code'
-  run 'C# AOT' './csharp/code-aot/code' './csharp/code-aot/code'
+  run 'C#' './csharp/in-process/code/code' './csharp/in-process/code/code'
+  run 'C# AOT' './csharp/in-process/code-aot/code' './csharp/in-process/code-aot/code'
   run 'Fortran' './fortran/run' './fortran/run'
   run 'Gleam' './maelg/build/dev/erlang/run/ebin/run.beam' "./maelg/run.sh"
   run 'Java' './jvm/run.class' 'java -cp .:../lib/java jvm.run'

@@ -34,10 +34,14 @@ function clean_benchmark {
   rm lua/code
   rm -f swift/code
   rm haxe/code.jar
-  rm -rf csharp/bin
-  rm -rf csharp/obj
-  rm -rf csharp/code-aot
-  rm -rf csharp/code
+  rm -rf csharp/legacy/bin
+  rm -rf csharp/legacy/obj
+  rm -rf csharp/legacy/code-aot
+  rm -rf csharp/legacy/code
+  rm -rf csharp/in-process/bin
+  rm -rf csharp/in-process/obj
+  rm -rf csharp/in-process/code-aot
+  rm -rf csharp/in-process/code
   rm -rf fsharp/bin
   rm -rf fsharp/obj
   rm -rf fsharp/code-aot
