@@ -1,4 +1,4 @@
-﻿var u = int.Parse(args[0]);
+var u = int.Parse(args[0]);
 var r = Random.Shared.Next(10_000);
 
 //Use span instead of array

@@ -60,3 +60,5 @@ hello-world/*/run
 */mealg/build
 erl_crash.dump
 manifest.toml
+
+.DS_Store

@@ -1,4 +1,4 @@
-﻿static int Fibonacci(int n) =>
+static int Fibonacci(int n) =>
     n <= 1 ? n : Fibonacci(n - 1) + Fibonacci(n - 2);
 
 var u = int.Parse(args[0]);
