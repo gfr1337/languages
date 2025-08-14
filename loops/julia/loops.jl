@@ -14,4 +14,6 @@ function loops(u::Int)::Int
     return a[r]                   # Return the element at the random index
 end
 
+precompile(loops, (Int,))
+
 end  # module Loops
